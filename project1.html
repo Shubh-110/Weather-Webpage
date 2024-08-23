@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather application</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter the city name" spellcheck="false">
+            <button><i class="fa-solid fa-magnifying-glass-location fa-1x"></i></button>
+        </div>
+        <div class="weather">
+            <i class="fa-solid fa-cloud-sun-rain fa-9x" class="weather-icon"></i>
+            <h1 class="temp">22°c</h1>
+            <h2 class="city">New York</h2>
+            <div class="details">
+                <div class="col">
+                    <i class="fa-solid fa-droplet fa-4x"></i>
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>humidity</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <i class="fa-solid fa-wind fa-4x"></i>
+                    <div>
+                        <p class="wind">15 km/h</p>
+                        <p>Wind speed</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const apiKey = "3be8e92072bdc3002a54fa3276b3b892";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weather-icon");
+
+        async function checkWeather(city){
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+            var data = await response.json();
+
+            console.log(data);
+
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°c";
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+            document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+
+            if(data.weather[0].main == "Clouds"){
+                weatherIcon.i ="fa-solid fa-cloud"; 
+            }
+            else if(data.weather[0].main == "Clear"){
+                weatherIcon.i ="fa-solid fa-sun";
+            }
+            else if(data.weather[0].main == "Rain"){
+                weatherIcon.i ="fa-solid fa-cloud-rain";
+            }
+            else if(data.weather[0].main == "Drizzle"){
+                weatherIcon.i ="fa-solid fa-cloud-sun-rain";
+            }
+            else if(data.weather[0].main == "Mist"){
+                weatherIcon.i ="fa-solid fa-cloud-sun";
+            }
+        }
+
+        searchBtn.addEventListener("click", ()=>{
+            checkWeather(searchBox.value);
+        })
+    </script>
+</body>
+</html>
