@@ -1,2 +1,2 @@
 # Weather-Webpage
-this is a webpage for information related to weather
+This is a webpage for information related to weather
